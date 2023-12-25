@@ -1,74 +1,73 @@
-#!/usr/bin/env node
-import { red, trueColor } from "kolorist";
-import prompts from "prompts";
+import prompts, { PromptObject } from "prompts";
 import validate from "validate-npm-package-name";
+import { red, trueColor } from "kolorist";
 
 const DEFAULT_PROJECT_NAME = "figma-plugin";
 const FRAMEWORKS_COLORS = {
   vanilla: [240, 219, 79],
   svelte: [255, 22, 0],
   react: [97, 219, 251],
-};
+} as const;
 const VARIANTS_COLORS = {
   typescript: [0, 122, 204],
   javascript: [240, 219, 79],
-};
+} as const;
 
 const frameworks = [
   {
     name: "vanilla",
     display: "Vanilla",
-    color: (text) => trueColor(...FRAMEWORKS_COLORS.vanilla)(text),
+    color: (text: string) => trueColor(...FRAMEWORKS_COLORS.vanilla)(text),
     variants: [
       {
         name: "vanilla-typescript",
         display: "Typescript",
-        color: (text) => trueColor(...VARIANTS_COLORS.typescript)(text),
+        color: (text: string) => trueColor(...VARIANTS_COLORS.typescript)(text),
       },
       {
         name: "vanilla-javascript",
         display: "Javascript",
-        color: (text) => trueColor(...VARIANTS_COLORS.javascript)(text),
+        color: (text: string) => trueColor(...VARIANTS_COLORS.javascript)(text),
       },
     ],
   },
   {
     name: "svelte",
     display: "Svelte",
-    color: (text) => trueColor(...FRAMEWORKS_COLORS.svelte)(text),
+    color: (text: string) => trueColor(...FRAMEWORKS_COLORS.svelte)(text),
     variants: [
       {
         name: "svelte-typescript",
         display: "Typescript",
-        color: (text) => trueColor(...VARIANTS_COLORS.typescript)(text),
+        color: (text: string) => trueColor(...VARIANTS_COLORS.typescript)(text),
       },
       {
         name: "svelte-javascript",
         display: "Javascript",
-        color: (text) => trueColor(...VARIANTS_COLORS.javascript)(text),
+        color: (text: string) => trueColor(...VARIANTS_COLORS.javascript)(text),
       },
     ],
   },
   {
     name: "react",
     display: "React",
-    color: (text) => trueColor(...FRAMEWORKS_COLORS.react)(text),
+    color: (text: string) => trueColor(...FRAMEWORKS_COLORS.react)(text),
     variants: [
       {
         name: "react-typescript",
         display: "Typescript",
-        color: (text) => trueColor(...VARIANTS_COLORS.typescript)(text),
+        color: (text: string) => trueColor(...VARIANTS_COLORS.typescript)(text),
       },
       {
         name: "react-javascript",
         display: "Javascript",
-        color: (text) => trueColor(...VARIANTS_COLORS.javascript)(text),
+        color: (text: string) => trueColor(...VARIANTS_COLORS.javascript)(text),
       },
     ],
   },
 ];
 
-const questions = [
+const questions: PromptObject<string>[] = [
   {
     type: "text",
     name: "name",
@@ -76,7 +75,7 @@ const questions = [
     message: "Project name:",
     validate: (dirName) => {
       const { validForNewPackages, errors } = validate(dirName);
-      return validForNewPackages || errors.join(", ");
+      return validForNewPackages || errors?.join(", ") || "unknown error";
     },
   },
   {

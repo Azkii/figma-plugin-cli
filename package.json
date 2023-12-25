@@ -1,17 +1,21 @@
 {
   "name": "figma-plugin-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "Figma Plugin CLI simplifies the creation of Figma plugin projects in JavaScript frameworks like React and Vue, offering a streamlined command-line interface for efficient project scaffolding.",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node ."
+    "dev": "unbuild --stub && node ./dist/index.mjs",
+    "build": "unbuild"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Dawid Pacanowski",
+  "license": "MIT",
   "devDependencies": {
+    "@types/prompts": "^2.4.9",
+    "@types/validate-npm-package-name": "^4.0.2",
     "kolorist": "^1.8.0",
     "prompts": "^2.4.2",
+    "unbuild": "^2.0.0",
     "validate-npm-package-name": "^5.0.0"
   }
 }
