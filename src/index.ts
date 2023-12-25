@@ -13,6 +13,12 @@ const VARIANTS_COLORS = {
   javascript: [240, 219, 79],
 } as const;
 
+interface Variant {
+  name: string;
+  display: string;
+  color: (text: string) => string;
+}
+
 const frameworks = [
   {
     name: "vanilla",
@@ -94,7 +100,7 @@ const questions: PromptObject<string>[] = [
     type: "select",
     name: "variant",
     message: "Select a variant:",
-    choices: ({ variants }) => {
+    choices: ({ variants }: { variants: Variant[] }) => {
       return variants.map((variant) => {
         return {
           title: variant.color(variant.display),
@@ -106,7 +112,7 @@ const questions: PromptObject<string>[] = [
 ];
 
 async function init() {
-  const response = await prompts(questions, {
+  await prompts(questions, {
     onCancel: () => {
       throw new Error(red("✖") + " CLI actions cancelled");
     },

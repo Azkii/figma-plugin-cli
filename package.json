@@ -5,11 +5,13 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "unbuild --stub && node ./dist/index.mjs",
-    "build": "unbuild"
+    "dev": "unbuild --stub && node .",
+    "build": "unbuild",
+    "check": "tsc --noEmit"
   },
   "author": "Dawid Pacanowski",
   "license": "MIT",
+  "files": ["index.js", "dist"],
   "devDependencies": {
     "@types/prompts": "^2.4.9",
     "@types/validate-npm-package-name": "^4.0.2",
