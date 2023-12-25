@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "unbuild --stub && node .",
     "build": "unbuild",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "publish": "npm run check && npm run build && npm version"
   },
   "author": "Dawid Pacanowski",
   "license": "MIT",
