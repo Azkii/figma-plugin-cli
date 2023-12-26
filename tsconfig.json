@@ -1,4 +1,5 @@
 {
+  "exclude": ["./templates"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ES6",
