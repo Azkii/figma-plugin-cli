@@ -1,7 +1,12 @@
-import prompts, { PromptObject } from "prompts";
-import validate from "validate-npm-package-name";
+import prompts, { Answers, PromptObject } from "prompts";
 import { red, trueColor } from "kolorist";
+import validate from "validate-npm-package-name";
+import path from "node:path";
+import fs from "node:fs";
+import { emptyDir, isDirEmpty } from "./helpers";
 
+const pkgManager = "npm";
+const root = process.cwd();
 const DEFAULT_PROJECT_NAME = "figma-plugin";
 const FRAMEWORKS_COLORS = {
   vanilla: [240, 219, 79],
@@ -26,12 +31,12 @@ const frameworks = [
     color: (text: string) => trueColor(...FRAMEWORKS_COLORS.vanilla)(text),
     variants: [
       {
-        name: "vanilla-typescript",
+        name: "vanilla-ts",
         display: "Typescript",
         color: (text: string) => trueColor(...VARIANTS_COLORS.typescript)(text),
       },
       {
-        name: "vanilla-javascript",
+        name: "vanilla-js",
         display: "Javascript",
         color: (text: string) => trueColor(...VARIANTS_COLORS.javascript)(text),
       },
@@ -43,12 +48,12 @@ const frameworks = [
     color: (text: string) => trueColor(...FRAMEWORKS_COLORS.svelte)(text),
     variants: [
       {
-        name: "svelte-typescript",
+        name: "svelte-ts",
         display: "Typescript",
         color: (text: string) => trueColor(...VARIANTS_COLORS.typescript)(text),
       },
       {
-        name: "svelte-javascript",
+        name: "svelte-js",
         display: "Javascript",
         color: (text: string) => trueColor(...VARIANTS_COLORS.javascript)(text),
       },
@@ -60,12 +65,12 @@ const frameworks = [
     color: (text: string) => trueColor(...FRAMEWORKS_COLORS.react)(text),
     variants: [
       {
-        name: "react-typescript",
+        name: "react-ts",
         display: "Typescript",
         color: (text: string) => trueColor(...VARIANTS_COLORS.typescript)(text),
       },
       {
-        name: "react-javascript",
+        name: "react-js",
         display: "Javascript",
         color: (text: string) => trueColor(...VARIANTS_COLORS.javascript)(text),
       },
@@ -73,7 +78,14 @@ const frameworks = [
   },
 ];
 
-const questions: PromptObject<string>[] = [
+type PromptName =
+  | "name"
+  | "framework"
+  | "variant"
+  | "overwrite"
+  | "proceedWithOverwrite";
+
+const questions: PromptObject<PromptName>[] = [
   {
     type: "text",
     name: "name",
@@ -83,6 +95,35 @@ const questions: PromptObject<string>[] = [
       const { validForNewPackages, errors } = validate(dirName);
       return validForNewPackages || errors?.join(", ") || "unknown error";
     },
+  },
+  {
+    type: (_, { name }) => {
+      const targetDir = path.join(root, name);
+      const overwriteDir = fs.existsSync(targetDir) && !isDirEmpty(targetDir);
+      return overwriteDir ? "select" : null;
+    },
+    name: "overwrite",
+    message: `Target directory is not empty. Please choose the appropriate action from the available options:`,
+    initial: 0,
+    choices: [
+      {
+        title: `Remove existing files and proceed`,
+        value: "yes",
+      },
+      {
+        title: `Cancel CLI operation`,
+        value: "no",
+      },
+    ],
+  },
+  {
+    type: (_, { overwrite }) => {
+      if (overwrite === "no") {
+        throw new Error(red("✖") + " CLI actions cancelled");
+      }
+      return null;
+    },
+    name: "proceedWithOverwrite",
   },
   {
     type: "select",
@@ -112,11 +153,35 @@ const questions: PromptObject<string>[] = [
 ];
 
 async function init() {
-  await prompts(questions, {
-    onCancel: () => {
-      throw new Error(red("✖") + " CLI actions cancelled");
-    },
-  }).catch((err) => console.log(err.message));
+  let response: Answers<PromptName>;
+  try {
+    response = await prompts(questions, {
+      onCancel: () => {
+        throw new Error(red("✖") + " CLI actions cancelled");
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return;
+  }
+
+  const { name, framework, variant, overwrite } = response;
+  const targetDir = path.join(root, name);
+  const template: string = variant.name || framework.name;
+  const templateDir = path.join(__dirname, "templates", template);
+
+  console.log(`Creating project template in ${targetDir}`);
+
+  if (overwrite === "yes") {
+    emptyDir(targetDir);
+  } else if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir);
+  }
+
+  console.log(`Project created. Now run:`);
+  console.log(`  cd ${name}`);
+  console.log(`  ${pkgManager} install`);
+  console.log(`  ${pkgManager} run watch`);
 }
 
 init();

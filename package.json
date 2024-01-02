@@ -12,7 +12,10 @@
   },
   "author": "Dawid Pacanowski",
   "license": "MIT",
-  "files": ["index.js", "dist"],
+  "files": [
+    "index.js",
+    "dist"
+  ],
   "devDependencies": {
     "@types/prompts": "^2.4.9",
     "@types/validate-npm-package-name": "^4.0.2",

@@ -2,13 +2,13 @@
   "exclude": ["./templates"],
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ES6",
+    "module": "ES2020",
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "declaration": false,
-    "sourceMap": false,
+    "sourceMap": false
   }
 }
