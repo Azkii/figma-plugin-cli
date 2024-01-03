@@ -3,7 +3,7 @@ import { red, trueColor } from "kolorist";
 import validate from "validate-npm-package-name";
 import path from "node:path";
 import fs from "node:fs";
-import { emptyDir, isDirEmpty } from "./helpers";
+import { copyContentToDirectory, emptyDir, isDirEmpty } from "./helpers";
 
 const pkgManager = "npm";
 const root = process.cwd();
@@ -168,7 +168,7 @@ async function init() {
   const { name, framework, variant, overwrite } = response;
   const targetDir = path.join(root, name);
   const template: string = variant.name || framework.name;
-  const templateDir = path.join(__dirname, "templates", template);
+  const templateDir = path.join(__dirname, "../", "templates", template);
 
   console.log(`Creating project template in ${targetDir}`);
 
@@ -177,6 +177,8 @@ async function init() {
   } else if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir);
   }
+
+  copyContentToDirectory(templateDir, targetDir);
 
   console.log(`Project created. Now run:`);
   console.log(`  cd ${name}`);
