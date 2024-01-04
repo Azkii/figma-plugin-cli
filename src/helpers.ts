@@ -56,11 +56,11 @@ export const copyContentToDirectory = (
   const { renameFiles } = options;
 
   templateDirectory.forEach((file) => {
-    const origFilePath = join(copyFrom, file);
-    const stats = statSync(origFilePath);
+    const originalFilePath = join(copyFrom, file);
+    const stats = statSync(originalFilePath);
 
     if (stats.isFile()) {
-      const contents = readFileSync(origFilePath, "utf8");
+      const contents = readFileSync(originalFilePath, "utf8");
       const newName = renameFiles?.[file] ? renameFiles[file] : file;
       writeFileSync(join(copyInto, newName), contents, "utf8");
     }
