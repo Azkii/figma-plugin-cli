@@ -178,7 +178,9 @@ async function init() {
     fs.mkdirSync(targetDir);
   }
 
-  copyContentToDirectory(templateDir, targetDir);
+  copyContentToDirectory(templateDir, targetDir, {
+    renameFiles: { _gitignore: ".gitignore" },
+  });
 
   console.log(`Project created. Now run:`);
   console.log(`  cd ${name}`);

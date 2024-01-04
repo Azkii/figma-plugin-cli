@@ -22,8 +22,17 @@ export const isDirEmpty = (path: string) => {
   return files.length === 0;
 };
 
-export const copyContentToDirectory = (copyFrom: string, copyInto: string) => {
+interface Options {
+  renameFiles?: { [oldName: string]: string };
+}
+
+export const copyContentToDirectory = (
+  copyFrom: string,
+  copyInto: string,
+  options: Options = {}
+) => {
   const templateDirectory = readdirSync(copyFrom);
+  const { renameFiles } = options;
 
   templateDirectory.forEach((file) => {
     const origFilePath = join(copyFrom, file);
@@ -31,12 +40,17 @@ export const copyContentToDirectory = (copyFrom: string, copyInto: string) => {
 
     if (stats.isFile()) {
       const contents = readFileSync(origFilePath, "utf8");
-      writeFileSync(join(copyInto, file), contents, "utf8");
+      const newName = renameFiles?.[file] ? renameFiles[file] : file;
+      writeFileSync(join(copyInto, newName), contents, "utf8");
     }
 
     if (stats.isDirectory()) {
       mkdirSync(join(copyInto, file));
-      copyContentToDirectory(join(copyFrom, file), join(copyInto, file));
+      copyContentToDirectory(
+        join(copyFrom, file),
+        join(copyInto, file),
+        options
+      );
     }
   });
 };
