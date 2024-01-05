@@ -75,3 +75,11 @@ export const copyContentToDirectory = (
     }
   });
 };
+
+export const editFile = (
+  filePath: string,
+  callback: (content: string) => string
+) => {
+  const content = readFileSync(filePath, "utf-8");
+  writeFileSync(filePath, callback(content), "utf-8");
+};

@@ -3,7 +3,12 @@ import { red, trueColor } from "kolorist";
 import validate from "validate-npm-package-name";
 import path from "node:path";
 import fs from "node:fs";
-import { copyContentToDirectory, emptyDir, isDirEmpty } from "./helpers";
+import {
+  copyContentToDirectory,
+  editFile,
+  emptyDir,
+  isDirEmpty,
+} from "./helpers";
 
 const pkgManager = "npm";
 const root = process.cwd();
@@ -180,6 +185,18 @@ async function init() {
 
   copyContentToDirectory(templateDir, targetDir, {
     renameFiles: { _gitignore: ".gitignore" },
+  });
+
+  editFile(path.join(targetDir, "package.json"), (content) => {
+    const parsedContent = JSON.parse(content);
+    parsedContent.name = name;
+    return JSON.stringify(parsedContent, null, 2) + "\n";
+  });
+
+  editFile(path.join(targetDir, "manifest.json"), (content) => {
+    const parsedContent = JSON.parse(content);
+    parsedContent.name = name;
+    return JSON.stringify(parsedContent, null, 2) + "\n";
   });
 
   console.log(`Project created. Now run:`);
