@@ -1,0 +1,10 @@
+{
+  "name": "figma-plugin-svelte-ts",
+  "api": "1.0.0",
+  "main": "dist/controller.js",
+  "editorType": [
+    "figma",
+    "figjam"
+  ],
+  "ui": "dist/index.html"
+}

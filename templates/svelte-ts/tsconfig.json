@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6"],
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "strict": true,
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
+    "noImplicitAny": true
+  },
+  "include": ["./ui-controller"]
+}
