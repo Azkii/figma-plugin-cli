@@ -60,9 +60,9 @@ export const copyContentToDirectory = (
     const stats = statSync(originalFilePath);
 
     if (stats.isFile()) {
-      const contents = readFileSync(originalFilePath, "utf8");
+      const contents = readFileSync(originalFilePath);
       const newName = renameFiles?.[file] ? renameFiles[file] : file;
-      writeFileSync(join(copyInto, newName), contents, "utf8");
+      writeFileSync(join(copyInto, newName), contents);
     }
 
     if (stats.isDirectory()) {
