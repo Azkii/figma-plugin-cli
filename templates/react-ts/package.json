@@ -1,0 +1,26 @@
+{
+  "name": "figma-plugin-react-ts",
+  "version": "1.0.0",
+  "main": "controller/controller.ts",
+  "scripts": {
+    "dev": "vite build --watch",
+    "watch": "vite build --watch",
+    "build": "vite build"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@figma/plugin-typings": "*",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "rollup-plugin-esbuild": "^6.1.0",
+    "typescript": "*",
+    "vite": "^5.0.11",
+    "vite-plugin-singlefile": "^0.13.5"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
