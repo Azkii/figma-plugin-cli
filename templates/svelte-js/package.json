@@ -1,0 +1,20 @@
+{
+  "name": "figma-plugin-svelte-js",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "controller/controller.js",
+  "scripts": {
+    "dev": "vite build --watch",
+    "watch": "vite build --watch",
+    "build": "vite build"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "vite": "^5.0.11",
+    "vite-plugin-singlefile": "^0.13.5",
+    "rollup-plugin-esbuild": "^6.1.0",
+    "svelte": "^4.2.9",
+    "@sveltejs/vite-plugin-svelte": "^3.0.1"
+  }
+}

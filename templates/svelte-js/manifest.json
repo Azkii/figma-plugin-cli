@@ -1,0 +1,13 @@
+{
+  "name": "figma-plugin-svelte-js",
+  "id": "plugin-id",
+  "api": "1.0.0",
+  "main": "dist/controller.js",
+  "ui": "dist/index.html",
+  "capabilities": [],
+  "editorType": ["figma", "figjam"],
+  "enableProposedApi": false,
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}
